@@ -18,5 +18,9 @@ class Solution {
 };
 
 int main() {
+    string n;
+    cin >> n;
+    Solution e;
+    cout << e.encode(n) << endl;
     return 0;
 }
