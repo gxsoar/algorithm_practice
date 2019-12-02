@@ -7,33 +7,32 @@ class Makemap {
     Makemap(vector<vector<char>>& grid) {
         count = 0;
         int n = grid.size(), m = grid[0].size();
-        int k = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (grid[i][j] == '1') {
                     count++;
-                    parent[k++] = i * n + j;
-                    // parent.push_back(k);
+                    parent.push_back(i * m + j);
                 } else
-                    parent[k++] = -1;
+                    parent.push_back(-1);
             }
         }
     }
     int get(int i) {
+        // cout << parent[i] << " " << i << endl;
         if (parent[i] != i) return parent[i] = get(parent[i]);
         return parent[i];
     }
     void merge(int x, int y) {
         int fx = get(x), fy = get(y);
         if (fx != fy) {
-            parent[fx] = fy;
+            parent[fy] = fx;
             count--;
         }
     }
     int getcount() { return count; }
 
    private:
-    int parent[10010];
+    vector<int> parent;
     int count;
 };
 
@@ -48,13 +47,13 @@ class Solution {
                 if (grid[i][j] == '1') {
                     grid[i][j] = '0';
                     if (i - 1 >= 0 && grid[i - 1][j] == '1')
-                        uf.merge(i * n + j, (i - 1) * n + j);
+                        uf.merge(i * m + j, (i - 1) * m + j);
                     if (i + 1 < n && grid[i + 1][j] == '1')
-                        uf.merge(i * n + j, (i + 1) * n + j);
+                        uf.merge(i * m + j, (i + 1) * m + j);
                     if (j - 1 >= 0 && grid[i][j - 1] == '1')
-                        uf.merge(i * n + j, i * n + j - 1);
+                        uf.merge(i * m + j, i * m + j - 1);
                     if (j + 1 < m && grid[i][j + 1] == '1')
-                        uf.merge(i * n + j, i * n + j + 1);
+                        uf.merge(i * m + j, i * m + j + 1);
                 }
             }
         }
